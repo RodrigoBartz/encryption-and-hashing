@@ -6,7 +6,17 @@ import { UpdateHashDto } from './dto/update-hash.dto';
 @Controller('hash')
 export class HashController {
   constructor(private readonly hashService: HashService) {}
+  @Post('hash')
+  async hash(@Body('senha') senha: string) {
+    const senhaComHash = await this.hashService.hash(senha);
+    return { senhaComHash };
+  }
 
+  @Post('comparar')
+  async compararSenha(@Body('senha') senha: string, @Body('hash') hash: string) {
+    const isMatch = await this.hashService.compararSenha(senha, hash);
+    return { isMatch };
+  }
   @Post()
   create(@Body() createHashDto: CreateHashDto) {
     return this.hashService.create(createHashDto);
